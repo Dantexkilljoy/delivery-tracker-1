@@ -1,9 +1,10 @@
 <div>
   <div>
     <h1>
-      List of all packages
+      Delivery Tracker
     </h1>
   </div>
+  Know if something gets lost in the mail
 </div>
 
 <hr>
@@ -11,7 +12,7 @@
 <div>
   <div>
     <h2>
-      Add a new package
+      Expecting a package?
     </h2>
 
     <form action="/insert_package" method="post">
@@ -25,10 +26,10 @@
 
       <div>
         <label for="date_box">
-          Date
+          Supposed to arrive on
         </label>
 
-        <input type="text" id="date_box" name="query_date">
+        <input type="date" id="date_box" name="query_supposed_to_arrive_on">
       </div>
 
       <div>
@@ -36,83 +37,73 @@
           Details
         </label>
 
-        <input type="text" id="details_box" name="query_details">
+        <textarea id="details_box" name="query_details" rows="3"></textarea>
       </div>
 
       <button>
-        Create package
+        Log delivery
       </button>
     </form>
   </div>
 </div>
 
 <hr>
-<div>
-  <div>
-    <table border="1">
-      <tr>
-        <th>
-          ID
-        </th>
 
-        <th>
-          Description
-        </th>
+<div class="waiting_on">
+  <h2>Waiting on</h2>
 
-        <th>
-          Date
-        </th>
-
-        <th>
-          Details
-        </th>
-
-        <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
-        </th>
-      </tr>
-
-      <% @list_of_packages.each do |a_package| %>
-      <tr>
-        <td>
-          <%= a_package.id %>
-        </td>
-
-        <td>
+  <ul>
+    <% @list_of_arriving_packages.each do |a_package| %>
+      <li>
+        <div>
           <%= a_package.description %>
-        </td>
+        </div>
 
-        <td>
-          <%= a_package.date %>
-        </td>
+        <% if Date.parse(a_package.date) < @today - 3.days  %>
+          <div style="color: red">
+            Supposed to arrive on <%= a_package.date %>
+          </div>
+        <% else %>
+          <div>
+            Supposed to arrive on <%= a_package.date %>
+          </div>
+        <% end %>
 
-        <td>
+        <div>
           <%= a_package.details %>
-        </td>
+        </div>
 
-        <td>
-          <%= time_ago_in_words(a_package.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(a_package.updated_at) %> ago
-        </td>
+        <div>
+          <form action="/modify_delivery/<%= a_package.id %>" method="post">
+            <input type="hidden" name="arrived" value="true">
 
-        <td>
-          <a href="/packages/<%= a_package.id %>">
-            Show details
-          </a>
-        </td>
-      </tr>
-      <% end %>
-    </table>
-  </div>
+            <button>Mark as received</button>
+          </form>
+        </div>
+
+      </li>
+    <% end %>
+  </ul>
 </div>
 
 <hr>
+
+<div class="received">
+  <h2>Received</h2>
+
+  <ul>
+    <% @list_of_delivered_packages.each do |delivery| %>
+      <li>
+        <div><%= delivery.description %></div>
+
+        <div>
+          <small>
+            Updated <%= time_ago_in_words(delivery.updated_at) %> ago
+
+            <a href="/delete_delivery/<%= delivery.id %>">Delete</a>
+          </small>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

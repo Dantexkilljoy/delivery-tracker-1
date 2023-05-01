@@ -14,8 +14,10 @@
     <%= stylesheet_link_tag 'application', media: 'all' %>
 
   </head>
-
+  
   <body>
+    <%= render "shared/nav" %>
+    <%= render "shared/flash" %>
     <%= yield %>
   </body>
 </html>
