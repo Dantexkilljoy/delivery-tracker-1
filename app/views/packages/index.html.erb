@@ -1,0 +1,118 @@
+<div>
+  <div>
+    <h1>
+      List of all packages
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div>
+  <div>
+    <h2>
+      Add a new package
+    </h2>
+
+    <form action="/insert_package" method="post">
+      <div>
+        <label for="description_box">
+          Description
+        </label>
+
+        <input type="text" id="description_box" name="query_description">
+      </div>
+
+      <div>
+        <label for="date_box">
+          Date
+        </label>
+
+        <input type="text" id="date_box" name="query_date">
+      </div>
+
+      <div>
+        <label for="details_box">
+          Details
+        </label>
+
+        <input type="text" id="details_box" name="query_details">
+      </div>
+
+      <button>
+        Create package
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Description
+        </th>
+
+        <th>
+          Date
+        </th>
+
+        <th>
+          Details
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @list_of_packages.each do |a_package| %>
+      <tr>
+        <td>
+          <%= a_package.id %>
+        </td>
+
+        <td>
+          <%= a_package.description %>
+        </td>
+
+        <td>
+          <%= a_package.date %>
+        </td>
+
+        <td>
+          <%= a_package.details %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_package.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(a_package.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/packages/<%= a_package.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>
